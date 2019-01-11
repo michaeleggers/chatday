@@ -31,39 +31,28 @@ hour = args.hour
 minutes = args.minutes
 location = args.location
 
-utctime = datetime.datetime.utcnow()
-munichUTC = datetime.timedelta(hours=1)
-minnesotaUTC = datetime.timedelta(hours=-6)
-londonUTC = datetime.timedelta(hours=0)
-hongkongUTC = datetime.timedelta(hours=8)
+# for a new location, add location string and UTC offset to this dict.
+location2UTC = {
+    "munich" : 1,
+    "minnesota" : -6,
+    "london" : 0,
+    "hongkong" : 8,
+    "istanbul" : 3
+}
+
 
 localTargetTime = datetime.datetime(2019, month, day, hour, minutes)
+targetUTC = localTargetTime + datetime.timedelta(hours=location2UTC.get(location))
 
-
-targetUTC = munichUTC
-if location == 'munich':
-    targetUTC = localTargetTime + munichUTC
-elif location == 'minnesota':
-    targetUTC = localTargetTime + minnesotaUTC
-elif location == 'london':
-    targetUTC = localTargetTime + londonUTC
-else: targetUTC = localTargetTime + hongkongUTC
-
+location2targetUTC = {}
+for location in location2UTC:
+    location2targetUTC[location] = localTargetTime + datetime.timedelta(hours=location2UTC.get(location))
 
 print ("\nUTC times")
-
-munichTargetUTC = localTargetTime + munichUTC
-minnesotaTargetUTC = localTargetTime + minnesotaUTC
-londonTargetUTC = localTargetTime + londonUTC
-hongkongTargetUTC = localTargetTime + hongkongUTC
-
-print ("Munich: \t" + str(munichTargetUTC))
-print ("Minnesota: \t" + str(minnesotaTargetUTC))
-print ("London: \t" + str(londonTargetUTC))
-print ("Hong Kong: \t" + str(hongkongTargetUTC))
+for location in location2targetUTC:
+    print(location + ": \t" + str(location2targetUTC.get(location)))
 
 print ("\nlocalized times")
-print ("Munich: \t" + str(localTargetTime + (munichTargetUTC - targetUTC)))
-print ("Minnesota: \t" + str(localTargetTime + (minnesotaTargetUTC - targetUTC)))
-print ("London: \t" + str(localTargetTime + (londonTargetUTC - targetUTC)))
-print ("Hong Kong: \t" + str(localTargetTime + (hongkongTargetUTC - targetUTC)))
+for location in location2targetUTC:
+    print(location + ": \t" + str(localTargetTime + (location2targetUTC.get(location) - targetUTC)))
+    
