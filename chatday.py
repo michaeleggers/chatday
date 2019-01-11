@@ -50,9 +50,9 @@ for location in location2UTC:
 
 print ("\nUTC times")
 for location in location2targetUTC:
-    print(location + ": \t" + str(location2targetUTC.get(location)))
+    print(location + ": \t" + str(location2targetUTC.get(location).ctime()))
 
 print ("\nlocalized times")
 for location in location2targetUTC:
-    print(location + ": \t" + str(localTargetTime + (location2targetUTC.get(location) - targetUTC)))
+    print(location + ": \t" + str( (localTargetTime + (location2targetUTC.get(location) - targetUTC)).ctime() ))
     
